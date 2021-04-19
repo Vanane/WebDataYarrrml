@@ -1,0 +1,29 @@
+# Somme des habitants des villes de l'Albanie
+SELECT (SUM(?habitants) as ?somme) WHERE
+{
+    ?ville ns1:featureClass 'P'.
+    ?ville ns1:population ?habitants.
+    ?pays ns1:featureClass 'A'.
+    ?pays ns1:name 'Albania'.
+}
+
+# Somme des habitants des villes dont le nom commence par B
+SELECT (SUM(?habitants) as ?somme) WHERE
+{
+    ?ville ns1:featureClass 'P'.
+    ?ville ns1:population ?habitants.
+    ?ville ns1:name "B[a-z A-Z'-]*".
+}
+
+# Top 10 des villes les plus peuplées
+SELECT (SUM(?habitants) as ?somme) WHERE
+{
+    ?ville ns1:featureClass 'P'.
+    ?ville ns1:population ?habitants.
+    ?pays ns1:featureClass 'A'.
+    ?pays ns1:name 'Albania'.
+}
+
+ORDER BY ASC
+
+# Top 10 des villes les moins peuplées

@@ -1,0 +1,18 @@
+mappings:
+    city:
+        subject: https://www.example.org/feature/$(geoname_id)/
+        predicateobjects:
+            - [a, 'https://www.geonames.org/ontology#Feature']
+            - ['https://www.geonames.org/ontology#featureClass', 'P']
+            - ['https://www.geonames.org/ontology#population', $(population)]
+            - ['https://www.geonames.org/ontology#name', $(name)]
+            - ['https://www.geonames.org/ontology#latitude', $(latitude)]
+            - ['https://www.geonames.org/ontology#longitude', $(longitude)]
+            - ['https://www.geonames.org/ontology#countryCode', country]
+    country:
+        subject: https://www.example.org/feature/$(country_code)/   
+        predicateobjects:
+            - [a, 'https://www.geonames.org/ontology#Feature']
+            - ['https://www.geonames.org/ontology#featureClass', 'A']
+            - ['https://www.geonames.org/ontology#name', $(country)]
+    
