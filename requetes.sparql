@@ -8,7 +8,7 @@ SELECT (SUM(?habitants) as ?somme) WHERE
 }
 
 # Somme des habitants des villes dont le nom commence par B
-SELECT (SUM(?habitants) as ?somme) WHERE
+SELECT (SUM(?habitants) AS ?somme) WHERE
 {
     ?ville ns1:featureClass 'P'.
     ?ville ns1:population ?habitants.
@@ -16,14 +16,39 @@ SELECT (SUM(?habitants) as ?somme) WHERE
 }
 
 # Top 10 des villes les plus peuplées
-SELECT (SUM(?habitants) as ?somme) WHERE
+SELECT ?name ?habitants WHERE
 {
     ?ville ns1:featureClass 'P'.
     ?ville ns1:population ?habitants.
-    ?pays ns1:featureClass 'A'.
-    ?pays ns1:name 'Albania'.
+    ?name ns1:name ?ville.
 }
+ORDER BY ?habitants DESC LIMIT 10
 
-ORDER BY ASC
+# Top 10 des pays les plus peuplés
+SELECT ?name SUM(?habitants) AS ?somme WHERE
+{
+    ?pays ns1:featureClass 'A'.
+    ?pays ns1:name ?name.
+    ?ville ns1:countryCode ?pays.
+    ?ville ns1:featureClass 'P'.
+    ?ville ns1:population ?habitants.
+}
+GROUP BY ?name
+ORDER BY ?habitants DESC LIMIT 10 
 
-# Top 10 des villes les moins peuplées
+# Comparer les deux villes les plus et moins peuplées
+SELECT ?nameP ?nameM ?diff WHERE
+{
+    ?villeP ns1:featureClass 'P'.
+    ?villeM ns1:featureClass 'P'.
+    ?villeP ns1:name ?nameP.
+    ?villeM ns1:name ?nameM.
+    ?villeP ns1:population {
+        SELECT MAX(?nbP) WHERE { ?P ns1:population ?nbP }
+    }
+
+    ?villeM ns1:population {
+        SELECT MAX(?nbM) WHERE { ?M ns1:population ?nbM }
+    }
+    BIND(?nbP - ?nbM AS ?diff)
+}
